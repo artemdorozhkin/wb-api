@@ -2,6 +2,7 @@ from typing import Any, Dict, List, Optional
 
 import requests
 
+from wb_api.client import WBApi
 from wb_api.exceptions import (
     ToManyRequests,
     TokenIsMalformed,
@@ -27,10 +28,13 @@ from wb_api.utils import validate_date
 
 
 class Statistics:
-    BASE_URL = "https://statistics-api.wildberries.ru/api/{api_vers}/supplier"
-
-    def __init__(self, api_key: str) -> None:
-        self.api_key = api_key
+    def __init__(self, wb_api: WBApi) -> None:
+        self.api_key = wb_api.api_key
+        self.base_url = (
+            "https://statistics-api-sanbox.wildberries.ru/api/{api_vers}/supplier"
+            if wb_api.test_mode
+            else "https://statistics-api.wildberries.ru/api/{api_vers}/supplier"
+        )
 
     def get_incomes(self, date_from: str) -> List[Income]:
         """
@@ -206,7 +210,7 @@ class Statistics:
         if flag is not None:
             params["flag"] = flag
 
-        url = f"{self.BASE_URL.format(api_vers=api_vers)}/{endpoint}"
+        url = f"{self.base_url.format(api_vers=api_vers)}/{endpoint}"
         response = requests.get(
             url=url,
             headers={"Authorization": f"Bearer {self.api_key}"},
