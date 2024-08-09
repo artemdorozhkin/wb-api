@@ -12,5 +12,4 @@ def validate_date(date: str):
 
 def snake_to_camel_case(snake_str):
     components = snake_str.split("_")
-    # Первый элемент оставляем в нижнем регистре, остальные делаем с заглавной буквы
     return components[0] + "".join(x.capitalize() for x in components[1:])
