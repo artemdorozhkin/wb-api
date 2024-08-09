@@ -53,7 +53,10 @@ class Statistics:
         Returns:
             List[Income]: Список поставок.
         """
-        data = self.__get_data("incomes", date_from)
+        data = self.__get_data(
+            endpoint="incomes",
+            date_from=date_from,
+        )
         return Incomes(incomes=data).incomes
 
     def get_stocks(self, date_from: str) -> List[Stock]:
@@ -79,7 +82,10 @@ class Statistics:
         Returns:
             List[Stock]: Список остатков товаров.
         """
-        data = self.__get_data("stocks", date_from)
+        data = self.__get_data(
+            endpoint="stocks",
+            date_from=date_from,
+        )
         return Stocks(stocks=data).stocks
 
     def get_orders(self, date_from: str, flag: Optional[int] = 0) -> List[Order]:
@@ -110,7 +116,11 @@ class Statistics:
         Returns:
             List[Order]: Список заказов.
         """
-        data = self.__get_data("orders", date_from, flag)
+        data = self.__get_data(
+            endpoint="orders",
+            date_from=date_from,
+            flag=flag,
+        )
         return Orders(orders=data).orders
 
     def get_sales(self, date_from: str, flag: Optional[int] = 0) -> List[Sale]:
@@ -141,7 +151,11 @@ class Statistics:
         Returns:
             List[Sale]: Список продаж и возвратов.
         """
-        data = self.__get_data("sales", date_from, flag)
+        data = self.__get_data(
+            endpoint="sales",
+            date_from=date_from,
+            flag=flag,
+        )
         return Sales(sales=data).sales
 
     def get_realization_reports(
@@ -181,11 +195,11 @@ class Statistics:
             List[RealizationReport]: Список отчетов по реализации.
         """
         data = self.__get_data(
-            "reportDetailByPeriod",
-            date_from,
-            date_to,
-            rrdid,
-            limit,
+            endpoint="reportDetailByPeriod",
+            date_from=date_from,
+            date_to=date_to,
+            rrdid=rrdid,
+            limit=limit,
             api_vers="v5",
         )
         return RealizationReports(realization_reports=data).realization_reports
@@ -194,28 +208,24 @@ class Statistics:
         self,
         endpoint: str,
         date_from: str,
-        date_to: Optional[str] = None,
-        rrdid: Optional[int] = None,
-        limit: Optional[int] = None,
-        flag: Optional[int] = None,
         api_vers: Optional[str] = "v1",
+        **kwargs,
     ) -> Any:
         validate_date(date_from)
 
         params: Dict[str, Any] = {"dateFrom": date_from}
 
-        if date_to:
-            params["dateTo"] = date_to
-        if rrdid is not None:
-            params["rrdId"] = rrdid
-        if limit:
-            params["limit"] = limit
-        if flag is not None:
-            params["flag"] = flag
+        if "date_to" in kwargs:
+            params["dateTo"] = kwargs["date_to"]
+        if "rrdid" in kwargs:
+            params["rrdId"] = kwargs["rrdid"]
+        if "limit" in kwargs:
+            params["limit"] = kwargs["limit"]
+        if "flag" in kwargs:
+            params["flag"] = kwargs["flag"]
 
         sandbox = "-sandbox" if self.test_mode else ""
         url = f"{self.base_url.format(api_vers=api_vers, sandbox=sandbox)}/{endpoint}"
-        print(url)
         response = requests.get(
             url=url,
             headers={"Authorization": f"Bearer {self.api_key}"},
