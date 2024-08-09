@@ -23,7 +23,7 @@ from wb_api.schemas.statistics.realization_report import (
     RealizationReport,
     RealizationReports,
 )
-from wb_api.utils import validate_date
+from wb_api.utils import snake_to_camel_case, validate_date
 
 
 class Statistics:
@@ -53,6 +53,8 @@ class Statistics:
         Returns:
             List[Income]: Список поставок.
         """
+        validate_date(date_from)
+
         data = self.__get_data(
             endpoint="incomes",
             date_from=date_from,
@@ -82,6 +84,8 @@ class Statistics:
         Returns:
             List[Stock]: Список остатков товаров.
         """
+        validate_date(date_from)
+
         data = self.__get_data(
             endpoint="stocks",
             date_from=date_from,
@@ -116,6 +120,8 @@ class Statistics:
         Returns:
             List[Order]: Список заказов.
         """
+        validate_date(date_from)
+
         data = self.__get_data(
             endpoint="orders",
             date_from=date_from,
@@ -151,6 +157,8 @@ class Statistics:
         Returns:
             List[Sale]: Список продаж и возвратов.
         """
+        validate_date(date_from)
+
         data = self.__get_data(
             endpoint="sales",
             date_from=date_from,
@@ -194,6 +202,8 @@ class Statistics:
         Returns:
             List[RealizationReport]: Список отчетов по реализации.
         """
+        validate_date(date_from)
+
         data = self.__get_data(
             endpoint="reportDetailByPeriod",
             date_from=date_from,
@@ -207,29 +217,17 @@ class Statistics:
     def __get_data(
         self,
         endpoint: str,
-        date_from: str,
         api_vers: Optional[str] = "v1",
         **kwargs,
     ) -> Any:
-        validate_date(date_from)
-
-        params: Dict[str, Any] = {"dateFrom": date_from}
-
-        if "date_to" in kwargs:
-            params["dateTo"] = kwargs["date_to"]
-        if "rrdid" in kwargs:
-            params["rrdId"] = kwargs["rrdid"]
-        if "limit" in kwargs:
-            params["limit"] = kwargs["limit"]
-        if "flag" in kwargs:
-            params["flag"] = kwargs["flag"]
+        kwargs = {snake_to_camel_case(key): value for key, value in kwargs.items()}
 
         sandbox = "-sandbox" if self.test_mode else ""
         url = f"{self.base_url.format(api_vers=api_vers, sandbox=sandbox)}/{endpoint}"
         response = requests.get(
             url=url,
             headers={"Authorization": f"Bearer {self.api_key}"},
-            params=params,
+            params=kwargs,
         )
 
         if response.ok:
