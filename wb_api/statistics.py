@@ -2,7 +2,6 @@ from typing import Any, Dict, List, Optional
 
 import requests
 
-from wb_api.client import WBApi
 from wb_api.exceptions import (
     ToManyRequests,
     TokenIsMalformed,
@@ -28,12 +27,11 @@ from wb_api.utils import validate_date
 
 
 class Statistics:
-    def __init__(self, wb_api: WBApi) -> None:
-        self.api_key = wb_api.api_key
-        self.base_url = (
-            "https://statistics-api-sanbox.wildberries.ru/api/{api_vers}/supplier"
-            if wb_api.test_mode
-            else "https://statistics-api.wildberries.ru/api/{api_vers}/supplier"
+    def __init__(self, wb_api) -> None:
+        self.api_key: str = wb_api.api_key
+        self.test_mode: bool = wb_api.test_mode
+        self.base_url: str = (
+            "https://statistics-api{sandbox}.wildberries.ru/api/{api_vers}/supplier"
         )
 
     def get_incomes(self, date_from: str) -> List[Income]:
@@ -150,7 +148,7 @@ class Statistics:
         self,
         date_from: str,
         date_to: str,
-        rrdid: Optional[int],
+        rrdid: Optional[int] = None,
         limit: Optional[int] = 100_000,
     ) -> List[RealizationReport]:
         """
@@ -183,7 +181,12 @@ class Statistics:
             List[RealizationReport]: Список отчетов по реализации.
         """
         data = self.__get_data(
-            "reportDetailByPeriod", date_from, date_to, rrdid, limit, api_vers="v5"
+            "reportDetailByPeriod",
+            date_from,
+            date_to,
+            rrdid,
+            limit,
+            api_vers="v5",
         )
         return RealizationReports(realization_reports=data).realization_reports
 
@@ -210,7 +213,9 @@ class Statistics:
         if flag is not None:
             params["flag"] = flag
 
-        url = f"{self.base_url.format(api_vers=api_vers)}/{endpoint}"
+        sandbox = "-sandbox" if self.test_mode else ""
+        url = f"{self.base_url.format(api_vers=api_vers, sandbox=sandbox)}/{endpoint}"
+        print(url)
         response = requests.get(
             url=url,
             headers={"Authorization": f"Bearer {self.api_key}"},
