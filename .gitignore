@@ -2,3 +2,8 @@
 !.gitignore
 
 __pycache__
+build
+dist
+*.egg-info
+publish.ps1
+setup.*
