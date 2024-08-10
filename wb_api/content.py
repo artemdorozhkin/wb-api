@@ -207,6 +207,37 @@ class Content:
         if not data["error"]:
             return TNVEDs(tnveds=data["data"]).tnveds
 
+    def get_nds(
+        self,
+        locale: Locale = Locale.RU,
+    ) -> List[str]:
+        """
+        Алиас для метода `get_vat` (список значений Ставка НДС)
+
+        Args:
+            locale (Locale, optional): Defaults to Locale.RU.
+                Язык значения элементов data ("ru", "en", "zh"). Не используется в песочнице
+        """
+        return self.get_vat(locale=locale)
+
+    def get_vat(
+        self,
+        locale: Locale = Locale.RU,
+    ) -> List[TNVED]:
+        """
+        С помощью данного метода можно получить список значений для характеристики Ставка НДС.
+
+        Args:
+            locale (Locale, optional): Defaults to Locale.RU.
+                Язык значения элементов data ("ru", "en", "zh"). Не используется в песочнице
+        """
+        data = self.__get_data(
+            endpoint="directory/vat",
+            locale=locale,
+        )
+        if not data["error"]:
+            return data["data"]
+
     def __get_data(
         self,
         endpoint: str,
