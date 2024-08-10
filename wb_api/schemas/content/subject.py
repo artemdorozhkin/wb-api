@@ -1,5 +1,3 @@
-{"subjectID": 105, "parentID": 2, "subjectName": "Кроссовки", "parentName": "Обувь"},
-
 from typing import List
 
 from pydantic import BaseModel, Field
