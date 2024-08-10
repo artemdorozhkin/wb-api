@@ -15,6 +15,7 @@ from wb_api.schemas.content.charc import Charc, Charcs
 from wb_api.schemas.content.color import Color, Colors
 from wb_api.schemas.content.country import Countries, Country
 from wb_api.schemas.content.subject import Subject, Subjects
+from wb_api.schemas.content.tnved import TNVED, TNVEDs
 from wb_api.utils import snake_to_camel_case
 from wb_api.schemas.content import Parent, Parents
 
@@ -176,6 +177,35 @@ class Content:
         )
         if not data["error"]:
             return data["data"]
+
+    def get_tnved(
+        self,
+        subject_ID: int,
+        search: int,
+        locale: Optional[Locale] = Locale.RU,
+    ) -> List[TNVED]:
+        """
+        С помощью данного метода можно получить список ТНВЭД кодов по ID предмета и фильтру по ТНВЭД коду.
+
+        Args:
+            subject_ID (int):
+                Идентификатор предмета
+
+            search (int):
+                Поиск по ТНВЭД-коду. Работает только в паре с subjectID
+
+            locale (Optional[Locale], optional): Defaults to `Locale.RU`.
+
+                Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
+        """
+        data = self.__get_data(
+            endpoint="directory/tnved",
+            subject_ID=subject_ID,
+            search=search,
+            locale=locale,
+        )
+        if not data["error"]:
+            return TNVEDs(tnveds=data["data"]).tnveds
 
     def __get_data(
         self,
