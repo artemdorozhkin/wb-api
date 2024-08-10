@@ -13,6 +13,7 @@ from wb_api.exceptions import (
 )
 from wb_api.schemas.content.charc import Charc, Charcs
 from wb_api.schemas.content.color import Color, Colors
+from wb_api.schemas.content.country import Countries, Country
 from wb_api.schemas.content.subject import Subject, Subjects
 from wb_api.utils import snake_to_camel_case
 from wb_api.schemas.content import Parent, Parents
@@ -137,6 +138,25 @@ class Content:
         )
         if not data["error"]:
             return data["data"]
+
+    def get_countries(
+        self,
+        locale: Optional[Locale] = Locale.RU,
+    ) -> List[Country]:
+        """
+        Получение значения характеристики Страна Производства.
+
+        Args:
+            locale (Optional[Locale], optional): Defaults to `Locale.RU`.
+
+                Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
+        """
+        data = self.__get_data(
+            endpoint="directory/countries",
+            locale=locale,
+        )
+        if not data["error"]:
+            return Countries(countries=data["data"]).countries
 
     def __get_data(
         self,
