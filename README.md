@@ -193,3 +193,140 @@ subjects = content.get_all_subjects()
 2. Метод возвращает список объектов `Subject`
 
 3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1object~1all/get)
+
+#### Предметы
+
+1. Для получения списка всех доступных предметов, родительских категорий предметов, и их идентификаторов, воспользуйтесь методом `get_all_subjects`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+content = api.content
+subjects = content.get_all_subjects()
+```
+
+2. Метод возвращает список объектов `Subject`
+
+3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1object~1all/get)
+
+#### Характеристики предмета
+
+1. Для получения списка характеристик предмета, воспользуйтесь методом `get_charcs`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+content = api.content
+charcs = content.get_charcs(subject_id=1)
+```
+
+2. Метод возвращает список объектов `Charc`
+
+3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get)
+
+#### Цвет
+
+1. Для получения списка значений характеристики Цвет, воспользуйтесь методом `get_colors`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+content = api.content
+colors = content.get_colors()
+```
+
+2. Метод возвращает список объектов `Color`
+
+3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1directory~1colors/get)
+
+#### Пол
+
+1. Для получения списка значений характеристики Пол, воспользуйтесь методом `get_kinds`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+content = api.content
+kinds = content.get_kinds()
+```
+
+2. Метод возвращает список строк
+
+3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1directory~1kinds/get)
+
+#### Страна Производства
+
+1. Для получения списка значений характеристики Страна Производства, воспользуйтесь методом `get_countries`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+content = api.content
+countries = content.get_countries()
+```
+
+2. Метод возвращает список объектов `Country`
+
+3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1directory~1countries/get)
+
+#### Сезон
+
+1. Для получения списка значений характеристики Сезон, воспользуйтесь методом `get_seasons`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+content = api.content
+seasons = content.get_seasons()
+```
+
+2. Метод возвращает список строк
+
+3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1directory~1seasons/get)
+
+#### ТНВЭД
+
+1. Для получения списка ТНВЭД кодов, воспользуйтесь методом `get_tnved`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+content = api.content
+tnved_list = content.get_tnved()
+```
+
+2. Метод возвращает список объектов `TNVED`
+
+3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1directory~1tnved/get)
+
+#### Ставка НДС
+
+1. Для получения списка значений характеристики Ставка НДС, воспользуйтесь методом `get_vat` или `get_nds`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+content = api.content
+vat_list = content.get_vat()
+nds_list = content.get_nds()
+```
+
+2. Метод возвращает список строк
+
+3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1directory~1vat/get)
