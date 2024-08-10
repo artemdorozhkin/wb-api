@@ -119,6 +119,25 @@ class Content:
         if not data["error"]:
             return Colors(colors=data["data"]).colors
 
+    def get_kinds(
+        self,
+        locale: Optional[Locale] = Locale.RU,
+    ) -> List[str]:
+        """
+        Получение значения характеристики пол.
+
+        Args:
+            locale (Optional[Locale], optional): Defaults to `Locale.RU`.
+
+                Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
+        """
+        data = self.__get_data(
+            endpoint="directory/kinds",
+            locale=locale,
+        )
+        if not data["error"]:
+            return data["data"]
+
     def __get_data(
         self,
         endpoint: str,
