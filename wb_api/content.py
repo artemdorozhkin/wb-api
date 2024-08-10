@@ -181,7 +181,7 @@ class Content:
     def get_tnved(
         self,
         subject_ID: int,
-        search: int,
+        search: Optional[int] = None,
         locale: Optional[Locale] = Locale.RU,
     ) -> List[TNVED]:
         """
@@ -223,7 +223,7 @@ class Content:
     def get_vat(
         self,
         locale: Locale = Locale.RU,
-    ) -> List[TNVED]:
+    ) -> List[str]:
         """
         С помощью данного метода можно получить список значений для характеристики Ставка НДС.
 
