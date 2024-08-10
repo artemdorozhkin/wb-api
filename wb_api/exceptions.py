@@ -20,3 +20,7 @@ class TokenIsNotApplicable(Exception):
 
 class ToManyRequests(Exception):
     pass
+
+
+class RequestError(Exception):
+    pass

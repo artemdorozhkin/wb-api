@@ -4,12 +4,14 @@ import requests
 
 from wb_api.enum import Locale
 from wb_api.exceptions import (
+    RequestError,
     ToManyRequests,
     TokenIsMalformed,
     TokenIsMissing,
     TokenIsNotApplicable,
     TokenNotFound,
 )
+from wb_api.schemas.content.charc import Charc, Charcs
 from wb_api.schemas.content.subject import Subject, Subjects
 from wb_api.utils import snake_to_camel_case
 from wb_api.schemas.content import Parent, Parents
@@ -28,7 +30,7 @@ class Content:
         С помощью данного метода можно получить список всех родительских категорий товаров.
 
         Args:
-            locale (Locale, optional): Defaults to Locale.RU.
+            locale (Locale, optional): Defaults to `Locale.RU`.
 
                 Параметр выбора языка ("ru", "en", "zh") значений поля name. Не используется в песочнице
         """
@@ -54,7 +56,7 @@ class Content:
             limit (Optional[int], optional):
                 Количество подкатегорий (предметов), максимум 1 000
 
-            locale (Optional[Locale], optional): Defaults to Locale.RU.
+            locale (Optional[Locale], optional): Defaults to `Locale.RU`.
 
                 Язык полей ответа ("ru", "en", "zh"). Не используется в песочнице
 
@@ -74,6 +76,28 @@ class Content:
         )
         if not data["error"]:
             return Subjects(subjects=data["data"]).subjects
+
+    def get_charcs(
+        self,
+        subject_id: int,
+        locale: Optional[Locale] = Locale.RU,
+    ) -> List[Charc]:
+        """
+        Получение списка характеристик предмета по его ID.
+
+        Args:
+            subject_id (int):
+                Идентификатор предмета
+            locale (Optional[Locale], optional): Defaults to `Locale.RU`.
+
+                Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
+        """
+        data = self.__get_data(
+            endpoint=f"object/charcs/{subject_id}",
+            locale=locale,
+        )
+        if not data["error"]:
+            return Charcs(charcs=data["data"]).charcs
 
     def __get_data(
         self,
@@ -113,9 +137,8 @@ class Content:
                 raise TokenIsNotApplicable(
                     "Используемый токен не применим к данным методам"
                 )
-        elif response.status_code == 429:
-            raise ToManyRequests(
-                "Превышено допустимое кол-во запросов в единицу времени"
-            )
+        elif response.json().get("error", False):
+            error_text = response.json().get("errorText", "Неизвестная ошибка")
+            raise RequestError(error_text)
         else:
             response.raise_for_status()
