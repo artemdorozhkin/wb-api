@@ -1,3 +1,4 @@
+from ast import Return
 from typing import List
 
 from wb_api.base_api import BaseAPI
@@ -45,11 +46,10 @@ class Common(BaseAPI):
         Тарифы для коробов
 
         Для товаров, которые поставляются на склад в коробах (коробках), возвращает стоимость:
-
-            доставки со склада или пункта приёма до покупателя;
-            доставки от покупателя до пункта приёма;
-            хранения на складе Wildberries.
-            Максимум — 60 запросов в минуту.
+            - доставки со склада или пункта приёма до покупателя;
+            - доставки от покупателя до пункта приёма;
+            - хранения на складе Wildberries.
+        Максимум — 60 запросов в минуту.
 
         Args:
             date (str): Дата в формате ГГГГ-ММ-ДД
@@ -66,18 +66,36 @@ class Common(BaseAPI):
         Тарифы для монопаллет
 
         Для товаров, которые поставляются на склад Wildberries на монопаллетах, возвращает стоимость:
-
-            доставки со склада до покупателя;
-            доставки от покупателя до склада;
-            хранения на складе Wildberries.
-            Максимум — 60 запросов в минуту.
+            - доставки со склада до покупателя;
+            - доставки от покупателя до склада;
+            - хранения на складе Wildberries.
+        Максимум — 60 запросов в минуту.
 
         Args:
             date (str): Дата в формате ГГГГ-ММ-ДД
         """
         validate_date(date)
 
-        data = self.get_data(endpoint="box", date=date)
+        data = self.get_data(endpoint="pallet", date=date)
         if "response" in data:
             if "data" in data["response"]:
-                return Box(**data["response"]["data"])
+                return Pallet(**data["response"]["data"])
+
+    def get_return(self, date: str) -> Return:
+        """
+        Тарифы на возврат
+
+        Возвращает [тарифы](https://seller.wildberries.ru/dynamic-product-categories/return-cost):
+            - на перевозку товаров со склада Wildberries или из пункта приёма до продавца
+            - на обратную перевозку возвратов, которые не забрал продавец
+        Максимум — 60 запросов в минуту
+
+        Args:
+            date (str): Дата в формате ГГГГ-ММ-ДД
+        """
+        validate_date(date)
+
+        data = self.get_data(endpoint="return", date=date)
+        if "response" in data:
+            if "data" in data["response"]:
+                return Return(**data["response"]["data"])
