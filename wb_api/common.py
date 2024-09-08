@@ -3,7 +3,9 @@ from typing import List
 from wb_api.base_api import BaseAPI
 from wb_api.enum.locale import Locale
 
+from wb_api.schemas.common.box import Box
 from wb_api.schemas.common.commission import Commission, Commissions
+from wb_api.utils import validate_date
 
 
 class Common(BaseAPI):
@@ -36,3 +38,24 @@ class Common(BaseAPI):
         )
         if "report" in data:
             return Commissions(commissions=data["report"]).commissions
+
+    def get_box(self, date: str) -> Box:
+        """
+        Тарифы для коробов
+
+        Для товаров, которые поставляются на склад в коробах (коробках), возвращает стоимость:
+
+            доставки со склада или пункта приёма до покупателя;
+            доставки от покупателя до пункта приёма;
+            хранения на складе Wildberries.
+            Максимум — 60 запросов в минуту.
+
+        Args:
+            date (str): Дата в формате ГГГГ-ММ-ДД
+        """
+        validate_date(date)
+
+        data = self.get_data(endpoint="box", date=date)
+        if "response" in data:
+            if "data" in data["response"]:
+                return Box(**data["response"]["data"])
