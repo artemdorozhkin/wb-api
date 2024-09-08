@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 class WarehousePallet(BaseModel):
     """
-    Тарифы для коробов по складу.
+    Тарифы для монопаллет по складу.
 
     Attributes:
         pallet_delivery_expr (str): Коэффициент доставки, %. На него умножается стоимость доставки. Во всех тарифах этот коэффициент уже учтён
@@ -50,7 +50,7 @@ class WarehousePallet(BaseModel):
 
 class Pallet(BaseModel):
     """
-    Модель комиссии по категориям товаров.
+    Модель тарифов для монопаллет.
 
     Attributes:
         dt_next_pallet (str): Дата начала следующего тарифа

@@ -50,7 +50,7 @@ class WarehouseBox(BaseModel):
 
 class Box(BaseModel):
     """
-    Модель комиссии по категориям товаров.
+    Модель тарифов для коробов.
 
     Attributes:
         dt_next_box (str): Дата начала следующего тарифа
