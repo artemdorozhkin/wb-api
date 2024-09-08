@@ -5,6 +5,7 @@ from wb_api.enum.locale import Locale
 
 from wb_api.schemas.common.box import Box
 from wb_api.schemas.common.commission import Commission, Commissions
+from wb_api.schemas.common.pallet import Pallet
 from wb_api.utils import validate_date
 
 
@@ -47,6 +48,27 @@ class Common(BaseAPI):
 
             доставки со склада или пункта приёма до покупателя;
             доставки от покупателя до пункта приёма;
+            хранения на складе Wildberries.
+            Максимум — 60 запросов в минуту.
+
+        Args:
+            date (str): Дата в формате ГГГГ-ММ-ДД
+        """
+        validate_date(date)
+
+        data = self.get_data(endpoint="box", date=date)
+        if "response" in data:
+            if "data" in data["response"]:
+                return Box(**data["response"]["data"])
+
+    def get_pallet(self, date: str) -> Pallet:
+        """
+        Тарифы для монопаллет
+
+        Для товаров, которые поставляются на склад Wildberries на монопаллетах, возвращает стоимость:
+
+            доставки со склада до покупателя;
+            доставки от покупателя до склада;
             хранения на складе Wildberries.
             Максимум — 60 запросов в минуту.
 
