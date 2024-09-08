@@ -1,14 +1,7 @@
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
-import requests
 
-from wb_api.exceptions import (
-    ToManyRequests,
-    TokenIsMalformed,
-    TokenIsNotApplicable,
-    TokenNotFound,
-    TokenIsMissing,
-)
+from wb_api.base_api import BaseAPI
 from wb_api.schemas.statistics import (
     Income,
     Incomes,
@@ -23,16 +16,15 @@ from wb_api.schemas.statistics.realization_report import (
     RealizationReport,
     RealizationReports,
 )
-from wb_api.utils import snake_to_camel_case, validate_date
+from wb_api.utils import validate_date
 
 
-class Statistics:
+class Statistics(BaseAPI):
     def __init__(self, wb_api) -> None:
-        self.api_key: str = wb_api.api_key
-        self.test_mode: bool = wb_api.test_mode
-        self.base_url: str = (
+        base_url: str = (
             "https://statistics-api{sandbox}.wildberries.ru/api/{api_vers}/supplier"
         )
+        super().__init__(api_client=wb_api, base_url=base_url)
 
     def get_incomes(self, date_from: str) -> List[Income]:
         """
@@ -55,7 +47,7 @@ class Statistics:
         """
         validate_date(date_from)
 
-        data = self.__get_data(
+        data = self._get_data(
             endpoint="incomes",
             date_from=date_from,
         )
@@ -86,7 +78,7 @@ class Statistics:
         """
         validate_date(date_from)
 
-        data = self.__get_data(
+        data = self._get_data(
             endpoint="stocks",
             date_from=date_from,
         )
@@ -122,7 +114,7 @@ class Statistics:
         """
         validate_date(date_from)
 
-        data = self.__get_data(
+        data = self._get_data(
             endpoint="orders",
             date_from=date_from,
             flag=flag,
@@ -159,7 +151,7 @@ class Statistics:
         """
         validate_date(date_from)
 
-        data = self.__get_data(
+        data = self._get_data(
             endpoint="sales",
             date_from=date_from,
             flag=flag,
@@ -204,7 +196,7 @@ class Statistics:
         """
         validate_date(date_from)
 
-        data = self.__get_data(
+        data = self._get_data(
             endpoint="reportDetailByPeriod",
             date_from=date_from,
             date_to=date_to,
@@ -213,48 +205,3 @@ class Statistics:
             api_vers="v5",
         )
         return RealizationReports(realization_reports=data).realization_reports
-
-    def __get_data(
-        self,
-        endpoint: str,
-        api_vers: Optional[str] = "v1",
-        **kwargs,
-    ) -> Any:
-        kwargs = {snake_to_camel_case(key): value for key, value in kwargs.items()}
-
-        sandbox = "-sandbox" if self.test_mode else ""
-        url = f"{self.base_url.format(api_vers=api_vers, sandbox=sandbox)}/{endpoint}"
-        response = requests.get(
-            url=url,
-            headers={"Authorization": f"Bearer {self.api_key}"},
-            params=kwargs,
-        )
-
-        if response.ok:
-            return response.json()
-
-        self.__handle_errors(response)
-
-    def __handle_errors(self, response: requests.Response) -> None:
-        try:
-            reason = response.json().get("detail", "").lower()
-        except (ValueError, KeyError):
-            reason = ""
-
-        if response.status_code == 401:
-            if "empty authorization header" in reason:
-                raise TokenIsMissing("Токен отсутствует")
-            elif "token is malformed" in reason:
-                raise TokenIsMalformed("Токен не правильно сформирован")
-            elif "token withdrawn" in reason:
-                raise TokenNotFound("Токен удален")
-            else:
-                raise TokenIsNotApplicable(
-                    "Используемый токен не применим к данным методам"
-                )
-        elif response.status_code == 429:
-            raise ToManyRequests(
-                "Превышено допустимое кол-во запросов в единицу времени"
-            )
-        else:
-            response.raise_for_status()
