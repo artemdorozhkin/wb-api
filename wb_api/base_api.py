@@ -16,7 +16,7 @@ class BaseAPI:
         self.api_key = api_client.api_key
         self.test_mode = api_client.test_mode
 
-    def _get_data(
+    def get_data(
         self,
         endpoint: str,
         api_vers: Optional[str] = "v1",

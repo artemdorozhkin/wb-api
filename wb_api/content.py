@@ -25,7 +25,7 @@ class Content(BaseAPI):
 
                 Параметр выбора языка ("ru", "en", "zh") значений поля name. Не используется в песочнице
         """
-        data = self._get_data(endpoint="object/parent/all", locale=locale)
+        data = self.get_data(endpoint="object/parent/all", locale=locale)
         if not data["error"]:
             return Parents(parents=data["data"]).parents
 
@@ -57,7 +57,7 @@ class Content(BaseAPI):
             parent_id (Optional[int], optional):
                 Номер позиции, с которой необходимо получить ответ
         """
-        data = self._get_data(
+        data = self.get_data(
             endpoint="object/all",
             name=name,
             limit=limit,
@@ -83,7 +83,7 @@ class Content(BaseAPI):
 
                 Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
         """
-        data = self._get_data(
+        data = self.get_data(
             endpoint=f"object/charcs/{subject_id}",
             locale=locale,
         )
@@ -102,7 +102,7 @@ class Content(BaseAPI):
 
                 Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
         """
-        data = self._get_data(
+        data = self.get_data(
             endpoint="directory/colors",
             locale=locale,
         )
@@ -121,7 +121,7 @@ class Content(BaseAPI):
 
                 Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
         """
-        data = self._get_data(
+        data = self.get_data(
             endpoint="directory/kinds",
             locale=locale,
         )
@@ -140,7 +140,7 @@ class Content(BaseAPI):
 
                 Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
         """
-        data = self._get_data(
+        data = self.get_data(
             endpoint="directory/countries",
             locale=locale,
         )
@@ -159,7 +159,7 @@ class Content(BaseAPI):
 
                 Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
         """
-        data = self._get_data(
+        data = self.get_data(
             endpoint="directory/seasons",
             locale=locale,
         )
@@ -186,7 +186,7 @@ class Content(BaseAPI):
 
                 Параметр выбора языка ("ru", "en", "zh") значений полей `subjectName`, `name`. Не используется в песочнице
         """
-        data = self._get_data(
+        data = self.get_data(
             endpoint="directory/tnved",
             subject_ID=subject_ID,
             search=search,
@@ -219,7 +219,7 @@ class Content(BaseAPI):
             locale (Locale, optional): Defaults to Locale.RU.
                 Язык значения элементов data ("ru", "en", "zh"). Не используется в песочнице
         """
-        data = self._get_data(
+        data = self.get_data(
             endpoint="directory/vat",
             locale=locale,
         )

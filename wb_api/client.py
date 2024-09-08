@@ -1,3 +1,4 @@
+from wb_api.common import Common
 from wb_api.content import Content
 from wb_api.statistics import Statistics
 
@@ -14,3 +15,7 @@ class WBApi:
     @property
     def content(self) -> Content:
         return Content(self)
+
+    @property
+    def common(self) -> Common:
+        return Common(self)

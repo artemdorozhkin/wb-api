@@ -47,7 +47,7 @@ class Statistics(BaseAPI):
         """
         validate_date(date_from)
 
-        data = self._get_data(
+        data = self.get_data(
             endpoint="incomes",
             date_from=date_from,
         )
@@ -78,7 +78,7 @@ class Statistics(BaseAPI):
         """
         validate_date(date_from)
 
-        data = self._get_data(
+        data = self.get_data(
             endpoint="stocks",
             date_from=date_from,
         )
@@ -114,7 +114,7 @@ class Statistics(BaseAPI):
         """
         validate_date(date_from)
 
-        data = self._get_data(
+        data = self.get_data(
             endpoint="orders",
             date_from=date_from,
             flag=flag,
@@ -151,7 +151,7 @@ class Statistics(BaseAPI):
         """
         validate_date(date_from)
 
-        data = self._get_data(
+        data = self.get_data(
             endpoint="sales",
             date_from=date_from,
             flag=flag,
@@ -196,7 +196,7 @@ class Statistics(BaseAPI):
         """
         validate_date(date_from)
 
-        data = self._get_data(
+        data = self.get_data(
             endpoint="reportDetailByPeriod",
             date_from=date_from,
             date_to=date_to,
