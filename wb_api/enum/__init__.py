@@ -1,1 +1,1 @@
-from wb_api.enum.content import Locale
+from wb_api.enum.locale import Locale
