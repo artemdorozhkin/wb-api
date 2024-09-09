@@ -25,6 +25,11 @@
   - [Сезон](#сезон)
   - [ТВЭД](#тнвэд)
   - [Ставка НДС](#ставка-ндс)
+- [API Общее (тарифы)](#api-общее-тарифы)
+  - [Комиссия по категориям товаров](#комиссия-по-категориям-товаров)
+  - [Тарифы для коробов](#тарифы-для-коробов)
+  - [Тарифы для монопаллет](#тарифы-для-монопаллет)
+  - [Тарифы на возврат](#тарифы-на-возврат)
 
 ## Требования
 
@@ -322,3 +327,83 @@ nds_list = content.get_nds()
 2. Метод возвращает список строк
 
 3. [Подробнее в документации к WB API Продавца](https://openapi.wildberries.ru/content/api/ru/#tag/Konfigurator/paths/~1content~1v2~1directory~1vat/get)
+
+### API Общее (тарифы)
+
+1. Получить данные по комиссиям и тарифам можно вызвав методы свойства `common`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+common = api.common
+```
+
+#### Комиссия по категориям товаров
+
+1. Для получения данных о комиссии по категориям товаров, воспользуйтесь методом `get_commissions`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+common = api.common
+commissions = stats.get_commissions()
+```
+
+2. Метод возвращает список объектов `Commission`
+
+3. [Подробнее в документации к WB API Общее](https://openapi.wb.ru/tariffs/api/ru/#tag/Komissii/paths/~1api~1v1~1tariffs~1commission/get)
+
+#### Тарифы для коробов
+
+1. Для получения статистики данных о тарифах для коробов, воспользуйтесь методом `get_box`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+common = api.common
+box = stats.get_box()
+```
+
+2. Метод возвращает объект `Box`
+
+3. [Подробнее в документации к WB API Общее](https://openapi.wb.ru/tariffs/api/ru/#tag/Koefficienty-skladov/paths/~1api~1v1~1tariffs~1box/get)
+
+#### Тарифы для монопаллет
+
+1. Для получения статистики данных о тарифах для монопаллет, воспользуйтесь методом `pallet`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+common = api.common
+pallet = stats.pallet(date="2024-09-08")
+```
+
+2. Метод возвращает объект `Pallet`
+
+3. [Подробнее в документации к WB API Общее](https://openapi.wb.ru/tariffs/api/ru/#tag/Koefficienty-skladov/paths/~1api~1v1~1tariffs~1pallet/get)
+
+#### Тарифы на возврат
+
+1. Для получения статистики данных о тарифах на возврат, воспользуйтесь методом `get_return`
+
+```python
+from wb_api import WBApi
+
+api = WBApi(api_key="<API_TOKEN>")
+
+common = api.common
+return_ = stats.get_return(date="2024-09-08")
+```
+
+2. Метод возвращает объект `Return`
+
+3. [Подробнее в документации к WB API Общее](https://openapi.wb.ru/tariffs/api/ru/#tag/Stoimost-vozvrata-prodavcu/paths/~1api~1v1~1tariffs~1return/get)
