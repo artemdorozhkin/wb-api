@@ -350,7 +350,7 @@ from wb_api import WBApi
 api = WBApi(api_key="<API_TOKEN>")
 
 common = api.common
-commissions = stats.get_commissions()
+commissions = common.get_commissions()
 ```
 
 2. Метод возвращает список объектов `Commission`
@@ -367,7 +367,7 @@ from wb_api import WBApi
 api = WBApi(api_key="<API_TOKEN>")
 
 common = api.common
-box = stats.get_box()
+box = common.get_box()
 ```
 
 2. Метод возвращает объект `Box`
@@ -384,7 +384,7 @@ from wb_api import WBApi
 api = WBApi(api_key="<API_TOKEN>")
 
 common = api.common
-pallet = stats.pallet(date="2024-09-08")
+pallet = common.pallet(date="2024-09-08")
 ```
 
 2. Метод возвращает объект `Pallet`
@@ -401,7 +401,7 @@ from wb_api import WBApi
 api = WBApi(api_key="<API_TOKEN>")
 
 common = api.common
-return_ = stats.get_return(date="2024-09-08")
+return_ = common.get_return(date="2024-09-08")
 ```
 
 2. Метод возвращает объект `Return`
