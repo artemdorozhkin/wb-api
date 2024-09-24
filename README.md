@@ -1,5 +1,8 @@
 # WB API Продавца SDK Python Library
 
+![Dynamic TOML Badge](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fartemdorozhkin%2Fwb-api%2Frefs%2Fheads%2Fmain%2Fpyproject.toml&query=%24.tool.poetry.version&label=latest)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/wb-api-sdk)
+
 Клиент для работы по [WB API Продавца](https://openapi.wildberries.ru/)
 
 #### [Требования](#требования-1)
