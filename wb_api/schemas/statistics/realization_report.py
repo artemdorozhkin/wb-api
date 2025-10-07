@@ -42,7 +42,7 @@ class RealizationReport(BaseModel):
         gi_box_type_name (str): Тип коробов.
         product_discount_for_report (float): Согласованный продуктовый дисконт.
         supplier_promo (float): Промокод.
-        rid (int): Уникальный идентификатор заказа.
+        rid (Optional[int]): Уникальный идентификатор заказа.
         ppvz_spp_prc (float): Скидка постоянного покупателя.
         ppvz_kvw_prc_base (float): Размер кВВ без НДС, % базовый.
         ppvz_kvw_prc (float): Итоговый кВВ без НДС, %.
@@ -159,7 +159,7 @@ class RealizationReport(BaseModel):
         description="Согласованный продуктовый дисконт.",
     )
     supplier_promo: float = Field(..., alias="supplier_promo", description="Промокод.")
-    rid: int = Field(..., alias="rid", description="Уникальный идентификатор заказа.")
+    rid: Optional[int] = Field(None, alias="rid", description="Уникальный идентификатор заказа.")
     ppvz_spp_prc: float = Field(
         ..., alias="ppvz_spp_prc", description="Скидка постоянного покупателя."
     )
